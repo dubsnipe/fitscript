@@ -47,7 +47,7 @@ runanalysis<-function(dataA="UCI HAR Dataset/test/X_test.txt",
   
   #turning into dplyr table
   final<-tbl_df(final)
-  
+
   #renaming the activity values
   final<-mutate(final, activity = replace(activity, activity==1, "walking"))
   final<-mutate(final, activity = replace(activity, activity==2, "walkingupstairs"))
@@ -74,6 +74,6 @@ runanalysis<-function(dataA="UCI HAR Dataset/test/X_test.txt",
   step5<-select(step5,type,variable,mean)
   
   #putting all results in a list to make life easier
-  answer<-list(final,summarize1,summarize2,step5)
-  return(answer)
+  answer<<-list(final,summarize1,summarize2,step5)
+  return(step5)
 }

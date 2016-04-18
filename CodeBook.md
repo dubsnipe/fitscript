@@ -12,7 +12,7 @@ runanalysis<-function(dataA, dataB, dataC, dataD, dataE, dataF)
 ```
 
 # Results
-The function will return a list with the following data:
+The function will return the tidy data set as required. However, I also created a global variable called answer which is a list with the following data:
 
 1. The merged train and test data sets.
 2. A summary table by activity, showing columns for mean and standard deviation.
