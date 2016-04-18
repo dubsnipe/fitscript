@@ -5,11 +5,11 @@ runanalysis<-function(dataA,dataB,dataC,dataD,dataE,dataF){
   #dataE: location of X_train.txt
   #dataF: location of y_train.txt
   
-  linesa<-readLines(dataA)
+  linesa<<-readLines(dataA)
   linesb<<-as.numeric(readLines(dataB))
   linesc<<-as.numeric(readLines(dataC))
   linesd<<-as.numeric(readLines(dataD))
-  linese<-readLines(dataE)
+  linese<<-readLines(dataE)
   linesf<<-as.numeric(readLines(dataF))
   
   
@@ -49,6 +49,20 @@ runanalysis<-function(dataA,dataB,dataC,dataD,dataE,dataF){
   #turning into dplyr table
   final<<-tbl_df(final)
   
+  final<<-mutate(final, activity = replace(activity, activity==1, "walking"))
+  final<<-mutate(final, activity = replace(activity, activity==2, "walkingupstairs"))
+  final<<-mutate(final, activity = replace(activity, activity==3, "walkingdownstairs"))
+  final<<-mutate(final, activity = replace(activity, activity==4, "sitting"))
+  final<<-mutate(final, activity = replace(activity, activity==5, "standing"))
+  final<<-mutate(final, activity = replace(activity, activity==6, "laying"))
+  
+  #final<<-group_by(final,activity)
+  #> finalmelt<-melt(final,id=c("activity","sample","subject"),measure.vars=c("reading"))
+
+  tosummarize<-group_by(final,activity)
+  tosummarize2<-group_by(final,subject)
+  summarize1<<-summarize(tosummarize,mean=mean(reading),sd=sd(reading))
+  summarize2<<-summarize(tosummarize2,mean=mean(reading),sd=sd(reading))
   write.csv(final,file="text3.csv")
   
   return(final)
