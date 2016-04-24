@@ -1,15 +1,15 @@
 runanalysis<-function(){
-  
+ 
   locFeatures<<-"UCI HAR Dataset/features.txt"
   
-  locXTest<<-"UCI HAR Dataset/test/X_test2.txt"
-  locXtrain<<-"UCI HAR Dataset/train/X_train2.txt"
+  locXTest<<-"UCI HAR Dataset/test/X_test.txt"
+  locXtrain<<-"UCI HAR Dataset/train/X_train.txt"
   
-  locActivityTest<<-"UCI HAR Dataset/test/y_test2.txt"
-  locSubjectTest<<-"UCI HAR Dataset/test/subject_test2.txt"
+  locActivityTest<<-"UCI HAR Dataset/test/y_test.txt"
+  locSubjectTest<<-"UCI HAR Dataset/test/subject_test.txt"
   
-  locActivityTrain<<-"UCI HAR Dataset/train/y_train2.txt"
-  locSubjectTrain<<-"UCI HAR Dataset/train/subject_train2.txt"
+  locActivityTrain<<-"UCI HAR Dataset/train/y_train.txt"
+  locSubjectTrain<<-"UCI HAR Dataset/train/subject_train.txt"
   
   
   #let's get started!
@@ -58,7 +58,7 @@ runanalysis<-function(){
   ttTotal<<-tbl_df(as.data.frame(testTrainTotal))
   requiredMeasurements<<-c("tBodyAcc-mean()-X", "tBodyAcc-mean()-Y", "tBodyAcc-mean()-Z", "tBodyAcc-std()-X", "tBodyAcc-std()-Y", "tBodyAcc-std()-Z", "tGravityAcc-mean()-X", "tGravityAcc-mean()-Y", "tGravityAcc-mean()-Z", "tGravityAcc-std()-X", "tGravityAcc-std()-Y", "tGravityAcc-std()-Z", "tBodyAccJerk-mean()-X", "tBodyAccJerk-mean()-Y", "tBodyAccJerk-mean()-Z", "tBodyAccJerk-std()-X", "tBodyAccJerk-std()-Y", "tBodyAccJerk-std()-Z", "tBodyGyro-mean()-X", "tBodyGyro-mean()-Y", "tBodyGyro-mean()-Z", "tBodyGyro-std()-X", "tBodyGyro-std()-Y", "tBodyGyro-std()-Z", "tBodyGyroJerk-mean()-X", "tBodyGyroJerk-mean()-Y", "tBodyGyroJerk-mean()-Z", "tBodyGyroJerk-std()-X", "tBodyGyroJerk-std()-Y", "tBodyGyroJerk-std()-Z", "tBodyAccMag-mean()", "tBodyAccMag-std()", "tGravityAccMag-mean()", "tGravityAccMag-std()", "tBodyAccJerkMag-mean()", "tBodyAccJerkMag-std()", "tBodyGyroMag-mean()", "tBodyGyroMag-std()", "tBodyGyroJerkMag-mean()", "tBodyGyroJerkMag-std()", "fBodyAcc-mean()-X", "fBodyAcc-mean()-Y", "fBodyAcc-mean()-Z", "fBodyAcc-std()-X", "fBodyAcc-std()-Y", "fBodyAcc-std()-Z", "fBodyAccJerk-mean()-X", "fBodyAccJerk-mean()-Y", "fBodyAccJerk-mean()-Z", "fBodyAccJerk-std()-X", "fBodyAccJerk-std()-Y", "fBodyAccJerk-std()-Z", "fBodyGyro-mean()-X", "fBodyGyro-mean()-Y", "fBodyGyro-mean()-Z", "fBodyGyro-std()-X", "fBodyGyro-std()-Y", "fBodyGyro-std()-Z", "fBodyAccMag-mean()", "fBodyAccMag-std()", "fBodyBodyAccJerkMag-mean()", "fBodyBodyAccJerkMag-std()", "fBodyBodyGyroMag-mean()", "fBodyBodyGyroMag-std()", "fBodyBodyGyroJerkMag-mean()", "fBodyBodyGyroJerkMag-std()")
   ttTotalFilter<<-filter(ttTotal,features %in% requiredMeasurements)
-  #extracting mean and standard deviation 
+  #extracting all features that include mean and standard deviation 
   
   
   colnames(ttTotalFilter)<<-c("observation","measurement","result","subject","activity","type")
@@ -71,16 +71,14 @@ runanalysis<-function(){
   ttTotalFilter<<-mutate(ttTotalFilter, activity = replace(activity, activity=="5", "standing"))
   ttTotalFilter<<-mutate(ttTotalFilter, activity = replace(activity, activity=="6", "laying"))
   #renaming the activity values
- 
-  answer1<-group_by(ttTotalFilter,measurement)
-  answer2<-group_by(ttTotalFilter,subject)
+  
+  requiredMeasurements2<<-c("tBodyAcc-mean()-X", "tBodyAcc-mean()-Y", "tBodyAcc-mean()-Z", "tGravityAcc-mean()-X", "tGravityAcc-mean()-Y", "tGravityAcc-mean()-Z", "tBodyAccJerk-mean()-X", "tBodyAccJerk-mean()-Y", "tBodyAccJerk-mean()-Z", "tBodyGyro-mean()-X", "tBodyGyro-mean()-Y", "tBodyGyro-mean()-Z", "tBodyGyroJerk-mean()-X", "tBodyGyroJerk-mean()-Y", "tBodyGyroJerk-mean()-Z", "tBodyAccMag-mean()", "tGravityAccMag-mean()", "tBodyAccJerkMag-mean()", "tBodyGyroMag-mean()", "tBodyGyroJerkMag-mean()", "fBodyAcc-mean()-X", "fBodyAcc-mean()-Y", "fBodyAcc-mean()-Z", "fBodyAccJerk-mean()-X", "fBodyAccJerk-mean()-Y", "fBodyAccJerk-mean()-Z", "fBodyGyro-mean()-X", "fBodyGyro-mean()-Y", "fBodyGyro-mean()-Z", "fBodyAccMag-mean()", "fBodyBodyAccJerkMag-mean()", "fBodyBodyGyroMag-mean()", "fBodyBodyGyroJerkMag-mean()")
+  ttTotalFilter2<<-filter(ttTotal,features %in% requiredMeasurements2)
+  
+  answer1<-group_by(ttTotalFilter2,activity)
+  answer2<-group_by(ttTotalFilter2,subject)
   
   answer<-rbind(answer1,answer2)
   return(answer)
-  
-    #I divided the results in two tables: one shows the mean and standard deviation per activity, and the other per user.
-  #summarize1<<-summarize(tosummarize1,mean=mean(result),sd=sd(result))
-  #summarize2<<-summarize(tosummarize2,mean=mean(result),sd=sd(result))
-  
   
 }

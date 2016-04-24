@@ -1,29 +1,26 @@
-## Code Book
+## Code Book 
 
 *This document explains the use of the **run_analysis.R** script.*
 
 # Variables
-These only consist of the relative location for the files used by the script. Note that the script asumes as default values as if you have put the dataset's original folder into your work folder.
+As long as the data is set within the work directory, there is no need for adding anything to the function, as it will perform automatically.
 
 The function must be initialized by using the following call:
 
 ```
-runanalysis<-function(dataA, dataB, dataC, dataD, dataE, dataF)
+data<-runanalysis()
 ```
 
 # Results
-The function will return the tidy data set as required. However, I also created a global variable called answer which is a list with the following data:
-
-1. The merged train and test data sets.
-2. A summary table by activity, showing columns for mean and standard deviation.
-3. A summary table by subject, showing columns for mean and standard deviation.
-4. A tidy (hopefully!) table as required by step 5 of the project.
+The function will return the tidy data set as required. 
 
 # Process
 The process goes like this:
 
-- All files are read.
-- Data is cleaned and separated into vectors.
+- All files are read and the data is stored in variables.
+- Data for features is cleaned.
+- Data from the Xtest and Xtrain files is split and put into vectors.
 - Vectors are merged together with corresponding data regarding activities and subjects.
 - I used dplyr to play with the data and transform it as needed.
-- Finally, the required answers are put into a list and returned.
+
+You can notice that two vectors are used to determine the functions that contain mean and standard deviations in order to filter the required data.
